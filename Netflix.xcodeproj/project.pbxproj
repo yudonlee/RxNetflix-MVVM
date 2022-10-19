@@ -32,9 +32,23 @@
 		76B7A489287B0B2700C58829 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7A488287B0B2700C58829 /* TitleTableViewCell.swift */; };
 		76B7A48B287B0DB900C58829 /* TitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7A48A287B0DB900C58829 /* TitleViewModel.swift */; };
 		76B7A48D287B954800C58829 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7A48C287B954800C58829 /* SearchResultsViewController.swift */; };
+		76BD694728FECA5100555A27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694628FECA5100555A27 /* RxCocoa */; };
+		76BD694928FECA5100555A27 /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694828FECA5100555A27 /* RxCocoa-Dynamic */; };
+		76BD694B28FECA5100555A27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694A28FECA5100555A27 /* RxSwift */; };
+		76BD694D28FECA5100555A27 /* RxSwift-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694C28FECA5100555A27 /* RxSwift-Dynamic */; };
 		76E97F2928CD8D450018D50C /* NetflixCloneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 76E97F2728CD8D450018D50C /* NetflixCloneModel.xcdatamodeld */; };
 		76E97F2B28CF17670018D50C /* DataPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E97F2A28CF17670018D50C /* DataPersistenceManager.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		76BD695E28FF6ECA00555A27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 766B78282871B626003AA5E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 766B782F2871B626003AA5E4;
+			remoteInfo = Netflix;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		762BB6EF28B2FA220072C317 /* YoutubeSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeSearchResponse.swift; sourceTree = "<group>"; };
@@ -61,6 +75,8 @@
 		76B7A488287B0B2700C58829 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		76B7A48A287B0DB900C58829 /* TitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleViewModel.swift; sourceTree = "<group>"; };
 		76B7A48C287B954800C58829 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
+		76BD695A28FF6ECA00555A27 /* NetflixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetflixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		76BD695C28FF6ECA00555A27 /* NetflixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetflixTests.swift; sourceTree = "<group>"; };
 		76E97F2828CD8D450018D50C /* NetflixCloneModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NetflixCloneModel.xcdatamodel; sourceTree = "<group>"; };
 		76E97F2A28CF17670018D50C /* DataPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,7 +88,15 @@
 			files = (
 				76B7A487287AC6F400C58829 /* Kingfisher in Frameworks */,
 				76B7A484287AC6DD00C58829 /* SDWebImageMapKit in Frameworks */,
+				76BD694728FECA5100555A27 /* RxCocoa in Frameworks */,
 				76B7A482287AC6DD00C58829 /* SDWebImage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76BD695728FF6ECA00555A27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				766B78322871B626003AA5E4 /* Netflix */,
+				76BD695B28FF6ECA00555A27 /* NetflixTests */,
 				766B78312871B626003AA5E4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				766B78302871B626003AA5E4 /* Netflix.app */,
+				76BD695A28FF6ECA00555A27 /* NetflixTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -199,6 +225,14 @@
 			path = General;
 			sourceTree = "<group>";
 		};
+		76BD695B28FF6ECA00555A27 /* NetflixTests */ = {
+			isa = PBXGroup;
+			children = (
+				76BD695C28FF6ECA00555A27 /* NetflixTests.swift */,
+			);
+			path = NetflixTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -219,10 +253,30 @@
 				76B7A481287AC6DD00C58829 /* SDWebImage */,
 				76B7A483287AC6DD00C58829 /* SDWebImageMapKit */,
 				76B7A486287AC6F400C58829 /* Kingfisher */,
+				76BD694F28FEF0F200555A27 /* RxCocoa */,
+				76BD695128FEF0F200555A27 /* RxSwift */,
 			);
 			productName = Netflix;
 			productReference = 766B78302871B626003AA5E4 /* Netflix.app */;
 			productType = "com.apple.product-type.application";
+		};
+		76BD695928FF6ECA00555A27 /* NetflixTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76BD696028FF6ECA00555A27 /* Build configuration list for PBXNativeTarget "NetflixTests" */;
+			buildPhases = (
+				76BD695628FF6ECA00555A27 /* Sources */,
+				76BD695728FF6ECA00555A27 /* Frameworks */,
+				76BD695828FF6ECA00555A27 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				76BD695F28FF6ECA00555A27 /* PBXTargetDependency */,
+			);
+			name = NetflixTests;
+			productName = NetflixTests;
+			productReference = 76BD695A28FF6ECA00555A27 /* NetflixTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -236,6 +290,10 @@
 				TargetAttributes = {
 					766B782F2871B626003AA5E4 = {
 						CreatedOnToolsVersion = 13.3.1;
+					};
+					76BD695928FF6ECA00555A27 = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = 766B782F2871B626003AA5E4;
 					};
 				};
 			};
@@ -251,12 +309,14 @@
 			packageReferences = (
 				76B7A480287AC6DD00C58829 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				76B7A485287AC6F400C58829 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				76BD694E28FEF0F200555A27 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 766B78312871B626003AA5E4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				766B782F2871B626003AA5E4 /* Netflix */,
+				76BD695928FF6ECA00555A27 /* NetflixTests */,
 			);
 		};
 /* End PBXProject section */
@@ -267,6 +327,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				766B783D2871B627003AA5E4 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76BD695828FF6ECA00555A27 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,7 +370,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		76BD695628FF6ECA00555A27 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76BD695D28FF6ECA00555A27 /* NetflixTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		76BD695F28FF6ECA00555A27 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 766B782F2871B626003AA5E4 /* Netflix */;
+			targetProxy = 76BD695E28FF6ECA00555A27 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		766B78422871B627003AA5E4 /* Debug */ = {
@@ -474,6 +557,42 @@
 			};
 			name = Release;
 		};
+		76BD696128FF6ECA00555A27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RG6A633V9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yudonlee.NetflixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Netflix.app/Netflix";
+			};
+			name = Debug;
+		};
+		76BD696228FF6ECA00555A27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RG6A633V9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yudonlee.NetflixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Netflix.app/Netflix";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -491,6 +610,15 @@
 			buildConfigurations = (
 				766B78452871B627003AA5E4 /* Debug */,
 				766B78462871B627003AA5E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76BD696028FF6ECA00555A27 /* Build configuration list for PBXNativeTarget "NetflixTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76BD696128FF6ECA00555A27 /* Debug */,
+				76BD696228FF6ECA00555A27 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -514,6 +642,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		76BD694528FECA5100555A27 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -531,6 +667,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 76B7A485287AC6F400C58829 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		76BD694F28FEF0F200555A27 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76BD694E28FEF0F200555A27 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		76BD695128FEF0F200555A27 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76BD694E28FEF0F200555A27 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 
