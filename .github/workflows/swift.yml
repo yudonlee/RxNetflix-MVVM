@@ -17,6 +17,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Start xcode build 🛠
       run: |
-        xcodebuild build -project Netflix/Netflix.xcodeproj -scheme Netflix -destination "${destination}"
+        xcodebuild build -project Netflix.xcodeproj -scheme Netflix -destination "${destination}"
       env:
         destination: ${{ matrix.destination }}
