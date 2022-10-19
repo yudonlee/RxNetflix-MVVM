@@ -6,9 +6,10 @@
 //
 
 import XCTest
+@testable import Netflix
 
 class NetflixTests: XCTestCase {
-
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -18,6 +19,9 @@ class NetflixTests: XCTestCase {
     }
 
     func testExample() throws {
+        let testA = 4
+        let testB = 4
+        XCTAssertEqual(testA, testB)
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // Any test you write for XCTest can be annotated as throws and async.
