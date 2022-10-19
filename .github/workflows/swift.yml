@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     strategy:
      matrix:
-        destination: ['platform=iOS Simulator,OS=15.0,name=iPhone 13 Pro']
+        destination: ['platform=iOS Simulator,OS=15.2,name=iPhone 13 Pro']
     # Step은 job의 일부로 실행될 일련의 task들을 나타냄
     steps:
     - uses: actions/checkout@v3
