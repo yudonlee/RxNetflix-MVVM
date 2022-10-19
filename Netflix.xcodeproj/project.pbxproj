@@ -35,6 +35,7 @@
 		76BD694728FECA5100555A27 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		76BD696928FF874F00555A27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD696828FF874F00555A27 /* RxCocoa */; };
 		76BD696B28FF874F00555A27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD696A28FF874F00555A27 /* RxSwift */; };
+		76BD696C28FFC72700555A27 /* NetflixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BD695C28FF6ECA00555A27 /* NetflixTests.swift */; };
 		76E97F2928CD8D450018D50C /* NetflixCloneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 76E97F2728CD8D450018D50C /* NetflixCloneModel.xcdatamodeld */; };
 		76E97F2B28CF17670018D50C /* DataPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E97F2A28CF17670018D50C /* DataPersistenceManager.swift */; };
 /* End PBXBuildFile section */
@@ -375,6 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76BD696C28FFC72700555A27 /* NetflixTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
