@@ -32,10 +32,9 @@
 		76B7A489287B0B2700C58829 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7A488287B0B2700C58829 /* TitleTableViewCell.swift */; };
 		76B7A48B287B0DB900C58829 /* TitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7A48A287B0DB900C58829 /* TitleViewModel.swift */; };
 		76B7A48D287B954800C58829 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7A48C287B954800C58829 /* SearchResultsViewController.swift */; };
-		76BD694728FECA5100555A27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694628FECA5100555A27 /* RxCocoa */; };
-		76BD694928FECA5100555A27 /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694828FECA5100555A27 /* RxCocoa-Dynamic */; };
-		76BD694B28FECA5100555A27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694A28FECA5100555A27 /* RxSwift */; };
-		76BD694D28FECA5100555A27 /* RxSwift-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD694C28FECA5100555A27 /* RxSwift-Dynamic */; };
+		76BD694728FECA5100555A27 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		76BD696928FF874F00555A27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD696828FF874F00555A27 /* RxCocoa */; };
+		76BD696B28FF874F00555A27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 76BD696A28FF874F00555A27 /* RxSwift */; };
 		76E97F2928CD8D450018D50C /* NetflixCloneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 76E97F2728CD8D450018D50C /* NetflixCloneModel.xcdatamodeld */; };
 		76E97F2B28CF17670018D50C /* DataPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E97F2A28CF17670018D50C /* DataPersistenceManager.swift */; };
 /* End PBXBuildFile section */
@@ -86,9 +85,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76BD696B28FF874F00555A27 /* RxSwift in Frameworks */,
 				76B7A487287AC6F400C58829 /* Kingfisher in Frameworks */,
 				76B7A484287AC6DD00C58829 /* SDWebImageMapKit in Frameworks */,
-				76BD694728FECA5100555A27 /* RxCocoa in Frameworks */,
+				76BD696928FF874F00555A27 /* RxCocoa in Frameworks */,
+				76BD694728FECA5100555A27 /* (null) in Frameworks */,
 				76B7A482287AC6DD00C58829 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,8 +254,8 @@
 				76B7A481287AC6DD00C58829 /* SDWebImage */,
 				76B7A483287AC6DD00C58829 /* SDWebImageMapKit */,
 				76B7A486287AC6F400C58829 /* Kingfisher */,
-				76BD694F28FEF0F200555A27 /* RxCocoa */,
-				76BD695128FEF0F200555A27 /* RxSwift */,
+				76BD696828FF874F00555A27 /* RxCocoa */,
+				76BD696A28FF874F00555A27 /* RxSwift */,
 			);
 			productName = Netflix;
 			productReference = 766B78302871B626003AA5E4 /* Netflix.app */;
@@ -309,7 +310,7 @@
 			packageReferences = (
 				76B7A480287AC6DD00C58829 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				76B7A485287AC6F400C58829 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				76BD694E28FEF0F200555A27 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				76BD696728FF874F00555A27 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 766B78312871B626003AA5E4 /* Products */;
 			projectDirPath = "";
@@ -374,7 +375,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76BD695D28FF6ECA00555A27 /* NetflixTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,7 +642,7 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		76BD694528FECA5100555A27 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		76BD696728FF874F00555A27 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
 			requirement = {
@@ -668,14 +668,14 @@
 			package = 76B7A485287AC6F400C58829 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		76BD694F28FEF0F200555A27 /* RxCocoa */ = {
+		76BD696828FF874F00555A27 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76BD694E28FEF0F200555A27 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = 76BD696728FF874F00555A27 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
 		};
-		76BD695128FEF0F200555A27 /* RxSwift */ = {
+		76BD696A28FF874F00555A27 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76BD694E28FEF0F200555A27 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = 76BD696728FF874F00555A27 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
