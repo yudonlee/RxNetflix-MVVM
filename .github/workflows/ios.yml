@@ -45,6 +45,5 @@ jobs:
         
       - name: Build Test
         env:
-          scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: xcodebuild clean test -project Netflix.xcodeproj -scheme Netflix -destination "platform=$platform,name=$device"
