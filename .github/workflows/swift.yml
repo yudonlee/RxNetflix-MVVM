@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-		name: Xcode build Test
     runs-on: macos-latest
 
     steps:
