@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-		name: Xcode build Test And Netflix Test
+    name: Xcode build Test And Netflix Test
     runs-on: macos-latest
 
     steps:
