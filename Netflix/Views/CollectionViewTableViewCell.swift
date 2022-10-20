@@ -26,6 +26,8 @@ class CollectionViewTableViewCell: UITableViewCell {
 //        왜 zero를 해주는걸까?
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
+        
         return collectionView
     }()
     
@@ -51,7 +53,9 @@ class CollectionViewTableViewCell: UITableViewCell {
     }
     
     func configure(with titles: [Title]) {
-        self.titles = titles
+        self.titles = titles.filter { title in
+            title.poster_path != nil
+        }
 //        main thread에서 reload해야하기 때문에, async를 해주었다.
         
         DispatchQueue.main.async {
@@ -82,8 +86,11 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else {
             return UICollectionViewCell()
         }
-//        cell.backgroundColor = .green
-        guard let model = titles[indexPath.row].poster_path else { return UICollectionViewCell() }
+        
+//      poster path가 empty시 빈 UICollectionViewCell을 리턴해주도록 해 crash 방지
+        guard let model = titles[indexPath.row].poster_path else {
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "default", for: indexPath)
+        }
         cell.configure(with: model)
         return cell
     }
