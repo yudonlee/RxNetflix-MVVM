@@ -19,7 +19,7 @@ class NetflixTests: XCTestCase {
     }
 
     func testExample() throws {
-        let testA = 4
+        let testA = 3
         let testB = 4
         XCTAssertEqual(testA, testB)
         // This is an example of a functional test case.
