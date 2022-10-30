@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 struct Constants {
     static let API_KEY = "4a09916eaf1807f253b181e44cbc3adc"
@@ -22,7 +23,7 @@ class APICaller {
     static let shared = APICaller()
     
     private var titles: [Title] = []
-    
+
     func getTrendingMovies(completion: @escaping (Result<[Title], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.baseURL)/3/trending/movie/day?api_key=\(Constants.API_KEY)") else {
             return
@@ -188,6 +189,121 @@ class APICaller {
         task.resume()
 
     }
+    
+    func getTrendingMoviesRx()-> Observable<[Title]> {
+        return Observable.create { [weak self] emitter in
+            self?.getTrendingMovies { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func getTrendingTvsRx()-> Observable<[Title]> {
+        return Observable.create { [weak self] emitter in
+            self?.getTrendingTvs { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func getUpcomingMoviesRx()-> Observable<[Title]> {
+        return Observable.create { [weak self] emitter in
+            self?.getUpcomingMovies{ result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    
+    func getPopularRx()-> Observable<[Title]> {
+        return Observable.create { [weak self] emitter in
+            self?.getPopular { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func getTopRatedRx()-> Observable<Title> {
+        return Observable.create { [weak self] emitter in
+            self?.getTopRated { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func getDiscoverMoviesRx()-> Observable<[Title]> {
+        return Observable.create { [weak self] emitter in
+            self?.getDiscoverMovies { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func searchRx(with query: String)-> Observable<[Title]> {
+        return Observable.create { [weak self] emitter in
+            self?.search(with: query) { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func getMovieRx(with query: String) -> Observable<VideoElement> {
+        return Observable.create { [weak self] emitter in
+            self?.getMovie(with: query) { result in
+                switch result {
+                case .success(let titles):
+                    emitter.onNext(titles)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+
+        
 }
 
 
