@@ -37,7 +37,10 @@ class TitleCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with model: String) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else { return }
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else {
+            return
+            
+        }
 //        kingfihser가 메모리는 더 많이 쓰는듯 하다 200MB
         posterImageView.kf.setImage(with: url)
 //      130MB
