@@ -14,5 +14,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+  - name: Checkout
+        uses: actions/checkout@v3
+      - name: Select Xcode Verson
+        run: sudo xcode-select -s '/Applications/Xcode_14.1.app//Contents/Developer'
+      - name: Swift Package Manager caches
+        uses: actions/cache@v3
       - name: Set Default Scheme
         run: xcodebuild clean test -project Netflix.xcodeproj -scheme "Netflix" -destination "platform=iOS Simulator,name=iPhone 13 Pro,OS=15.2" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO

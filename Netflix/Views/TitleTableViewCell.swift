@@ -36,8 +36,7 @@ class TitleTableViewCell: UITableViewCell {
         return button
     }()
     
-//    이걸 왜 해주는거지? 다른건 이해해도 이거는 이해가 가질 않는다. 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(titlePosterUIImageView)
         contentView.addSubview(titleLabel)
@@ -76,7 +75,7 @@ class TitleTableViewCell: UITableViewCell {
         
     }
     
-    public func configure(with model: TitleViewModel) {
+    public func configure(with model: PreviewMovie) {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterURL)") else { return }
         titlePosterUIImageView.sd_setImage(with: url, completed: nil)
         titleLabel.text = model.titleName
