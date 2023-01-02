@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 enum Sections: Int {
     case TrendingMovies = 0
     case TrendingTvs = 1
@@ -20,6 +22,8 @@ class HomeViewController: UIViewController {
     
     private var randomTrendingMovie: Title?
     private var headerView: HeroHeaderUIView?
+    
+    private var disposeBag = DisposeBag()
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -84,38 +88,7 @@ class HomeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
         //아직까진 값이 없기 때문에 아무 데이터가 존재하지 않는다.
-        
     }
-    
-//    private func fetchData() {
-//        APICaller.shared.getTrendingMovies { results in
-//            switch results {
-//            case .success(let movies):
-//                print(movies)
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
-//{        }APICaller.shared.getTrendingTvs { results in
-//            switch results {
-//            case.success(let tvs):
-//                print(tvs)
-//            case.failure(let error):
-//                print(error)
-//            }
-//        }
-//
-//        APICaller.shared.getUpcomingMovies { results in
-//
-//        }
-//
-//        APICaller.shared.getPopular { results in
-//
-//        }
-//        APICaller.shared.getTopRated { results in
-//
-//        }
-//    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
@@ -143,41 +116,33 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         case Sections.TrendingTvs.rawValue:
-            APICaller.shared.getTrendingTvs { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+            APICaller.shared.getTrendingTvsRx()
+                .subscribe { event in
+                    if case let .next(titles) = event {
+                        cell.configure(with: titles)
+                    }
+                }.disposed(by: disposeBag)
         case Sections.Popular.rawValue:
-            APICaller.shared.getPopular { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+            APICaller.shared.getPopularRx()
+                .subscribe { event in
+                    if case let .next(titles) = event {
+                        cell.configure(with: titles)
+                    }
+                }.disposed(by: disposeBag)
         case Sections.Upcoming.rawValue:
-            APICaller.shared.getUpcomingMovies { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
+            APICaller.shared.getUpcomingMoviesRx()
+                .subscribe { event in
+                    if case let .next(titles) = event {
+                        cell.configure(with: titles)
+                    }
+                }.disposed(by: disposeBag)
         case Sections.Toprated.rawValue:
-            APICaller.shared.getTopRated { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-}
-            }
+            APICaller.shared.getTopRatedRx()
+                .subscribe { event in
+                    if case let .next(titles) = event {
+                        cell.configure(with: titles)
+                    }
+                }.disposed(by: disposeBag)
         default:
             return UITableViewCell()
         }
