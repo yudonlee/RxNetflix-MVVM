@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 
 enum Sections: Int {
     case TrendingMovies = 0
@@ -16,6 +17,7 @@ enum Sections: Int {
     case Upcoming = 3
     case Toprated = 4
 }
+
 class HomeViewController: UIViewController {
 
     let sectionTitles: [String] = ["Trending Movies",  "Tending Tv", "Pouplar", "Upcoming Movie", "Top rated"]
@@ -24,6 +26,10 @@ class HomeViewController: UIViewController {
     private var headerView: HeroHeaderUIView?
     
     private var disposeBag = DisposeBag()
+    
+    
+    private let viewModel = HomeViewModel()
+    
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -40,30 +46,33 @@ class HomeViewController: UIViewController {
         homeFeedTable.dataSource = self
         
         configureNavBar()
-        
-        // Do any additional setup after loading the view.
-        
-//        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height))
-        headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
-        homeFeedTable.tableHeaderView = headerView
         configureHeroHeaderView()
+        bind()
         
-//        homeFeedTable.translatesAutoresizingMaskIntoConstraints = false
-//        homeFeedTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100)
-//        fetchData()
-        
-//        APICaller.shared.getMovie(with: "harry potter") { result in
-////
-//        }
+    }
+    
+    private func bind() {
+        viewModel.output
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { [weak self] event in
+                switch event {
+                case .displayMovieDetail(let movieDetail):
+                    let vc = TitlePreviewViewController()
+                    vc.configure(with: movieDetail)
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }).disposed(by: disposeBag)
     }
     
     private func configureHeroHeaderView() {
+        headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
+        homeFeedTable.tableHeaderView = headerView
         APICaller.shared.getTrendingMovies { [weak self] result in
             switch result {
             case .success(let titles):
                 let selectedTitle = titles.randomElement()
                 self?.randomTrendingMovie = selectedTitle
-                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
+                self?.headerView?.configure(with: PreviewMovie(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -182,13 +191,24 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {
-    func collectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
-        
-        DispatchQueue.main.async { [weak self] in
-            let vc = TitlePreviewViewController()
-            vc.configure(with: viewModel)
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }
-        
+    func collectionViewMovieCellTapped(title: Title) {
+        viewModel.eventUI.accept(.movieCellTapped(title: title))
+    }
+    
+    func collectionViewMovieCellDownloadTapped(title: Title) {
+        viewModel.eventUI.accept(.movieCellDownloadTapped(title: title))
+    }
+    
+}
+
+
+#if DEBUG
+import SwiftUI
+struct HomeViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        UINavigationController(rootViewController: HomeViewController())
+            .toPreview()
     }
 }
+#endif
+

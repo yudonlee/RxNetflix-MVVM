@@ -13,11 +13,40 @@ class DataPersistenceManager {
         case failedToSaveData
         case failedToFetchData
         case failedToDeleteData
+        case failedToLoadAppDelegate
     }
     
     static let shared = DataPersistenceManager()
     
     private init() { }
+    
+    func downloadTitleWith(model: Title) throws -> Bool {
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            throw DatabaseError.failedToLoadAppDelegate
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+//        context manager에게 TitleItem이란걸 만들었다고 알려준다.
+        let item = TitleItem(context: context)
+        item.original_title = model.original_title
+        item.id = Int64(model.id)
+        item.original_name = model.original_name
+        item.overview = model.overview
+        item.media_type = model.media_type
+        item.poster_path = model.poster_path
+        item.release_date = model.release_date
+        item.vote_count = Int64(model.vote_count)
+        item.vote_average = model.vote_average
+
+        do {
+            try context.save()
+            return true
+        } catch {
+            throw DatabaseError.failedToSaveData
+        }
+    }
     
     func downloadTitleWith(model: Title, completion: @escaping (Result<Void, Error>) -> Void) {
         
