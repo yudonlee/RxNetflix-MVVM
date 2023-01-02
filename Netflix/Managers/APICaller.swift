@@ -23,7 +23,7 @@ class APICaller {
     static let shared = APICaller()
     
     private var titles: [Title] = []
-
+    
     func getTrendingMovies(completion: @escaping (Result<[Title], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.baseURL)/3/trending/movie/day?api_key=\(Constants.API_KEY)") else {
             return
@@ -33,18 +33,15 @@ class APICaller {
                 return
             }
             do {
-                // 우리 data를 json object로 바꾸기
-//                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                 let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
                 completion(.success(results.results))
-//                print(results.results[0].original_title)
             } catch {
                 completion(.failure(APIError.failedTogetData))
             }
         }
         task.resume()
     }
-//    TODO: Result가 무엇인지, escaping이 무엇을 의미하는지?
+    //    TODO: Result가 무엇인지, escaping이 무엇을 의미하는지?
     func getTrendingTvs(completion: @escaping (Result<[Title], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.baseURL)/3/trending/tv/day?api_key=\(Constants.API_KEY)") else {
             return
@@ -53,10 +50,8 @@ class APICaller {
             data, _, error in
             guard let data = data, error == nil  else { return }
             do {
-//                TODO: JSONSerial과 decode의 차이, JSONSerial이 상대적으로 간단하게 받는거 같음
-//                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                //                TODO: JSONSerial과 decode의 차이, JSONSerial이 상대적으로 간단하게 받는거 같음
                 let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
-//                print(results)
                 completion(.success(results.results))
             } catch {
                 completion(.failure(APIError.failedTogetData))
@@ -74,10 +69,7 @@ class APICaller {
             guard let data = data, error == nil else { return }
             
             do {
-//                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                 let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
-                
-//                print(results)
                 completion(.success(results.results))
             } catch {
                 completion(.failure(APIError.failedTogetData))
@@ -95,10 +87,8 @@ class APICaller {
             guard let data = data, error == nil else { return }
             
             do {
-//                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                 let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
                 completion(.success(results.results))
-//                print(results)
             } catch {
                 completion(.failure(APIError.failedTogetData))
             }
@@ -117,7 +107,6 @@ class APICaller {
                 let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
                 print(results)
                 completion(.success(results.results))
-//                completion(.success(API))
             } catch {
                 completion(.failure(APIError.failedTogetData))
             }
@@ -141,7 +130,7 @@ class APICaller {
     }
     
     func search(with query: String,  completion: @escaping (Result<[Title], Error>) -> Void) {
-//        query를 넘기기전에, query를 format으로 해야한다.
+        //        query를 넘기기전에, query를 format으로 해야한다.
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         
         guard let url = URL(string: "\(Constants.baseURL)/3/search/movie?api_key=\(Constants.API_KEY)&query=\(query)") else {
@@ -178,7 +167,7 @@ class APICaller {
             
             do {
                 let results = try JSONDecoder().decode(YoutubeSearchResponse.self, from: data)
-//                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                //                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                 if results.items.first != nil, let videoElement = results.items.first {
                     completion(.success(videoElement))
                 }
@@ -187,7 +176,7 @@ class APICaller {
             }
         }
         task.resume()
-
+        
     }
     
     func getTrendingMoviesRx()-> Observable<[Title]> {
@@ -247,7 +236,7 @@ class APICaller {
         }
     }
     
-    func getTopRatedRx()-> Observable<Title> {
+    func getTopRatedRx()-> Observable<[Title]> {
         return Observable.create { [weak self] emitter in
             self?.getTopRated { result in
                 switch result {
@@ -302,10 +291,4 @@ class APICaller {
             return Disposables.create()
         }
     }
-
-        
 }
-
-//\(Constants.baseURL)/3/movie/upcoming?api_key=(Constants.API_KEY)&language=ko-KR&page=1
-
-//https://api.themoviedb.org/3/discover/movie?api_key=4a09916eaf1807f253b181e44cbc3adc&language=ko-KR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate
