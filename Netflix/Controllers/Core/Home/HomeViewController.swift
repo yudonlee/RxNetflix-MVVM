@@ -45,41 +45,35 @@ class HomeViewController: UIViewController {
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
         
-        configureNavBar()
-        configureHeroHeaderView()
+        configureNavigationBar()
+        configureTableHeaderView()
         bind()
         
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.eventUI.accept(.viewWillAppear)
+    }
     private func bind() {
         viewModel.output
-            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] event in
                 switch event {
                 case .displayMovieDetail(let movieDetail):
                     let vc = TitlePreviewViewController()
                     vc.configure(with: movieDetail)
                     self?.navigationController?.pushViewController(vc, animated: true)
+                case .thumbnail(let previewMovie):
+                    self?.headerView?.configure(with: previewMovie)
                 }
             }).disposed(by: disposeBag)
     }
     
-    private func configureHeroHeaderView() {
+    private func configureTableHeaderView() {
         headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
-        APICaller.shared.getTrendingMovies { [weak self] result in
-            switch result {
-            case .success(let titles):
-                let selectedTitle = titles.randomElement()
-                self?.randomTrendingMovie = selectedTitle
-                self?.headerView?.configure(with: PreviewMovie(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
     }
     
-    private func configureNavBar() {
+    private func configureNavigationBar() {
 //        why not let? 60초후에 공개됩니다 우리가 더 수정해야할 부분이 존재하기 때문이다
 //      image 내부 수정할 부분이 존재하는데, intrinsicCotentSize의 문제, 분명하게 설정하지 않으면 버튼의 넓이만큼 image가 expanding된다. 그렇기 때문에 intrinctContentSize의 property는 default로 height에 대해서는 설정되는데, width는 되지 않음. 
         var image = UIImage(named: "netflixLogo")
