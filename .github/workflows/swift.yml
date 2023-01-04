@@ -19,9 +19,11 @@ jobs:
       - name: Swift Package Manager caches
         uses: actions/cache@v3
         with: 
-          path: .build
+          path: ~/Library/Developer/Xcode/DerivedData/Netflix/SourcePackages/checkouts
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }} 
           restore-keys: |
             ${{ runner.os }}-spm-
       - name: Set Scheme and Build Xcode 
         run: xcodebuild test -project Netflix.xcodeproj -scheme "Netflix" -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.2" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+
+      
