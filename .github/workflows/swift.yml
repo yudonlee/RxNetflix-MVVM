@@ -17,9 +17,9 @@ jobs:
       - name: Select Xcode Verson
         run: sudo xcode-select -s '/Applications/Xcode_14.2.app//Contents/Developer'
       - name: Swift Package Manager caches
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with: 
-          path: ~/Library/Developer/Xcode/DerivedData/Netflix/SourcePackages/checkouts
+          path: .build
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }} 
           restore-keys: |
             ${{ runner.os }}-spm-
