@@ -27,8 +27,9 @@ class HomeViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     
-    
     private let viewModel = HomeViewModel()
+    
+    private var movieTitles: [[Title]] = []
     
     
     private let homeFeedTable: UITableView = {
@@ -55,6 +56,7 @@ class HomeViewController: UIViewController {
         viewModel.eventUI.accept(.viewWillAppear)
     }
     private func bind() {
+        viewModel.eventUI.accept(.requestAllMovies)
         viewModel.output
             .subscribe(onNext: { [weak self] event in
                 switch event {
@@ -64,6 +66,11 @@ class HomeViewController: UIViewController {
                     self?.navigationController?.pushViewController(vc, animated: true)
                 case .thumbnail(let previewMovie):
                     self?.headerView?.configure(with: previewMovie)
+                case .allMovies(let movieTitles):
+                    self?.movieTitles = movieTitles
+                    DispatchQueue.main.async {
+                        self?.homeFeedTable.reloadData()
+                    }
                 }
             }).disposed(by: disposeBag)
     }
@@ -96,7 +103,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionTitles.count
+        return movieTitles.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -107,48 +114,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.delegate = self
-        
-        switch indexPath.section {
-        case Sections.TrendingMovies.rawValue:
-            APICaller.shared.getTrendingMovies { result in
-                switch result {
-                case .success(let titles):
-                    cell.configure(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        case Sections.TrendingTvs.rawValue:
-            APICaller.shared.getTrendingTvsRx()
-                .subscribe { event in
-                    if case let .next(titles) = event {
-                        cell.configure(with: titles)
-                    }
-                }.disposed(by: disposeBag)
-        case Sections.Popular.rawValue:
-            APICaller.shared.getPopularRx()
-                .subscribe { event in
-                    if case let .next(titles) = event {
-                        cell.configure(with: titles)
-                    }
-                }.disposed(by: disposeBag)
-        case Sections.Upcoming.rawValue:
-            APICaller.shared.getUpcomingMoviesRx()
-                .subscribe { event in
-                    if case let .next(titles) = event {
-                        cell.configure(with: titles)
-                    }
-                }.disposed(by: disposeBag)
-        case Sections.Toprated.rawValue:
-            APICaller.shared.getTopRatedRx()
-                .subscribe { event in
-                    if case let .next(titles) = event {
-                        cell.configure(with: titles)
-                    }
-                }.disposed(by: disposeBag)
-        default:
-            return UITableViewCell()
-        }
+        cell.configure(with: movieTitles[indexPath.section])
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
