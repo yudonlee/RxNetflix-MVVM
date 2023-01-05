@@ -52,6 +52,8 @@ class TitlePreviewViewController: UIViewController {
             
     }()
     
+    private var navigationYOffset: CGFloat = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -98,6 +100,16 @@ class TitlePreviewViewController: UIViewController {
         }
         
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationYOffset = self.navigationController?.navigationBar.frame.origin.y ?? 0.0
+        self.navigationController?.navigationBar.transform = .init(translationX: 0, y: 0)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.transform = .init(translationX: 0, y: navigationYOffset)
     }
     
     func configure(with model: MovieDetail) {
