@@ -61,9 +61,11 @@ class HomeViewController: UIViewController {
             .subscribe(onNext: { [weak self] event in
                 switch event {
                 case .displayMovieDetail(let movieDetail):
-                    let vc = TitlePreviewViewController()
-                    vc.configure(with: movieDetail)
-                    self?.navigationController?.pushViewController(vc, animated: true)
+                    DispatchQueue.main.async {
+                        let vc = TitlePreviewViewController()
+                        vc.configure(with: movieDetail)
+                        self?.navigationController?.pushViewController(vc, animated: true)
+                    }
                 case .thumbnail(let previewMovie):
                     self?.headerView?.configure(with: previewMovie)
                 case .allMovies(let movieTitles):
