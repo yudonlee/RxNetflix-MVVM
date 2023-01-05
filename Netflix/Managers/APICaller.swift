@@ -97,7 +97,7 @@ class APICaller {
     }
     
     func getTopRated(completion: @escaping (Result<[Title], Error>) -> Void) {
-        guard let url = URL(string:  "\(Constants.baseURL)/3/movie/popular?api_key=\(Constants.API_KEY)&language=ko-KR&page=1") else {
+        guard let url = URL(string:  "\(Constants.baseURL)/3/movie/top_rated?api_key=\(Constants.API_KEY)&language=ko-KR&page=1") else {
             return
         }
         
