@@ -19,7 +19,7 @@ jobs:
       - name: Swift Package Manager caches
         uses: actions/cache@v3
         with: 
-          path: /Users/runner/Library/Developer/Xcode/DerivedData/Netflix-fvkfqbttbgingcgkalgjywvhvlvy/SourcePackages/checkouts
+          path: /Users/runner/work/RxNetflix-MVVM/RxNetflix-MVVM/SourcePackages
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }} 
           restore-keys: |
             ${{ runner.os }}-spm-
