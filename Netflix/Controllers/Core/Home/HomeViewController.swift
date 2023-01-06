@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 enum Sections: Int {
     case TrendingMovies = 0
@@ -16,6 +17,24 @@ enum Sections: Int {
     case Popular = 2
     case Upcoming = 3
     case Toprated = 4
+}
+
+struct MovieCcell {
+    var titles: [Title]
+}
+
+struct SectionOfMovieCell {
+    var header: String
+    var items: [Item]
+}
+
+extension SectionOfMovieCell: SectionModelType {
+    typealias Item = MovieCcell
+    
+    init(original: SectionOfMovieCell, items: [Item]) {
+        self = original
+        self.items = items
+    }
 }
 
 class HomeViewController: UIViewController {
@@ -29,7 +48,7 @@ class HomeViewController: UIViewController {
     
     private let viewModel = HomeViewModel()
     
-    private var movieTitles: [[Title]] = []
+    private var data = BehaviorRelay<[[Title]]>(value: [])
     
     
     private let homeFeedTable: UITableView = {
@@ -44,35 +63,57 @@ class HomeViewController: UIViewController {
         view.addSubview(homeFeedTable)
         
         homeFeedTable.delegate = self
-        homeFeedTable.dataSource = self
+//        homeFeedTable.dataSource = self
         
         configureNavigationBar()
         configureTableHeaderView()
+        dataSourceToTableView()
         bind()
+        
         
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.eventUI.accept(.viewWillAppear)
     }
+    
+    private func dataSourceToTableView() {
+        let dataSource = RxTableViewSectionedReloadDataSource<SectionOfMovieCell>(
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else { return UITableViewCell() }
+                
+                cell.delegate = self
+                cell.configure(with: item.titles)
+                return cell
+            })
+        
+        dataSource.titleForHeaderInSection = { dataSource, index in
+            return dataSource.sectionModels[index].header
+        }
+        
+        data
+            .withUnretained(self)
+            .map { vc, values in values.enumerated().map { index, value in return SectionOfMovieCell(header: vc.sectionTitles[index], items: [MovieCcell(titles: value)]) } }
+            .bind(to: homeFeedTable.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+    }
+    
     private func bind() {
         viewModel.eventUI.accept(.requestAllMovies)
         viewModel.output
-            .subscribe(onNext: { [weak self] event in
+            .withUnretained(self)
+            .subscribe(onNext: { currentVC, event in
                 switch event {
                 case .displayMovieDetail(let movieDetail):
                     DispatchQueue.main.async {
                         let vc = TitlePreviewViewController()
                         vc.configure(with: movieDetail)
-                        self?.navigationController?.pushViewController(vc, animated: true)
+                        currentVC.navigationController?.pushViewController(vc, animated: true)
                     }
                 case .thumbnail(let previewMovie):
-                    self?.headerView?.configure(with: previewMovie)
+                    currentVC.headerView?.configure(with: previewMovie)
                 case .allMovies(let movieTitles):
-                    self?.movieTitles = movieTitles
-                    DispatchQueue.main.async {
-                        self?.homeFeedTable.reloadData()
-                    }
+                    currentVC.data.accept(movieTitles)
                 }
             }).disposed(by: disposeBag)
     }
@@ -83,8 +124,6 @@ class HomeViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-//        why not let? 60초후에 공개됩니다 우리가 더 수정해야할 부분이 존재하기 때문이다
-//      image 내부 수정할 부분이 존재하는데, intrinsicCotentSize의 문제, 분명하게 설정하지 않으면 버튼의 넓이만큼 image가 expanding된다. 그렇기 때문에 intrinctContentSize의 property는 default로 height에 대해서는 설정되는데, width는 되지 않음. 
         var image = UIImage(named: "netflixLogo")
         image = image?.resizeTo(size: CGSize(width: 50, height: 35))
         image = image?.withRenderingMode(.alwaysOriginal)
@@ -103,22 +142,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return movieTitles.count
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
-            return UITableViewCell()
-        }
-        
-        cell.delegate = self
-        cell.configure(with: movieTitles[indexPath.section])
-        return cell
-    }
+extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
@@ -138,15 +162,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
         
     }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
-    }
-    
     //NavigationBar가 scroll를 아래로 당기면 같이 올라감(navigation bar가 고정돼서 transparent하는것을 막아줌)
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let defaultOffset = view.safeAreaInsets.top
         let offset = scrollView.contentOffset.y + defaultOffset
-        
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
     }
 }
