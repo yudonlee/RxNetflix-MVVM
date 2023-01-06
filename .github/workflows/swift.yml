@@ -24,6 +24,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-
       - name: Set Scheme and Build Xcode 
-        run: xcodebuild test -project Netflix.xcodeproj -scheme "Netflix" -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.2" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        run: xcodebuild archive test -project Netflix.xcodeproj -scheme "Netflix" -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.2" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
 
       
