@@ -26,7 +26,7 @@ final class HomeViewModel: ViewModel {
     let output: PublishRelay<Output> = .init()
     
     enum Input {
-        case requestMovieData(type: Sections)
+        case requestAllMovies
         case downloadButtonTapped(title: Title)
         case movieCellTapped(title: Title)
         case movieCellDownloadTapped(title: Title)
@@ -34,27 +34,30 @@ final class HomeViewModel: ViewModel {
     }
     
     enum Output {
-        //        case movieDataLoaded(titles: [Title])
         case displayMovieDetail(movie: MovieDetail)
         case thumbnail(previewMovie: PreviewMovie)
+        case allMovies(movieTitles: [[Title]])
     }
     
     init() {
         bind()
     }
+    
     func bind() {
-        _ = eventUI.subscribe(onNext: { [weak self] event in
+        eventUI
+            .withUnretained(self)
+            .subscribe(onNext: { (model, event) in
             switch event {
-            case .requestMovieData(let section):
-                break
+            case .requestAllMovies:
+                model.requestAllMovies()
             case .downloadButtonTapped(let title):
-                self?.downloadMovie(title: title)
+                model.downloadMovie(title: title)
             case .movieCellTapped(let title):
-                self?.movieDetail(title: title)
+                model.movieDetail(title: title)
             case .movieCellDownloadTapped(let title):
-                self?.downloadMovie(title: title)
+                model.downloadMovie(title: title)
             case .viewWillAppear:
-                self?.randomMovie()
+                model.randomMovie()
             }
         }).disposed(by: disposeBag)
     }
@@ -75,7 +78,7 @@ final class HomeViewModel: ViewModel {
                 viewModel.output.accept(.thumbnail(previewMovie: previewMovie))
             } onError: { error in
                 os_log(.error, "영화정보를 불러오지 못했어요")
-            }
+            }.disposed(by: disposeBag)
         
     }
     
@@ -103,6 +106,15 @@ final class HomeViewModel: ViewModel {
     
     func requestMovieSection(type: Sections) {
         
+    }
+    
+    func requestAllMovies() {
+        Observable.zip(APICaller.shared.getTrendingMoviesRx(), APICaller.shared.getTrendingTvsRx(), APICaller.shared.getPopularRx(), APICaller.shared.getUpcomingMoviesRx(), APICaller.shared.getTopRatedRx())
+            .map { [$0, $1, $2, $3, $4] }
+            .withUnretained(self)
+            .subscribe { model, movieTitles in
+                model.output.accept(.allMovies(movieTitles: movieTitles))
+            }.disposed(by: disposeBag)
     }
     
     func downloadMovie(title: Title) {

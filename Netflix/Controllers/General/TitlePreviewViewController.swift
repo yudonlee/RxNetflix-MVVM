@@ -52,6 +52,8 @@ class TitlePreviewViewController: UIViewController {
             
     }()
     
+    private var navigationYOffset: CGFloat = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,7 +71,7 @@ class TitlePreviewViewController: UIViewController {
     private func configureConstraints() {
         
         let webViewConstraints = [
-            webView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             webView.heightAnchor.constraint(equalToConstant: 300)
@@ -99,10 +101,23 @@ class TitlePreviewViewController: UIViewController {
         
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationYOffset = self.navigationController?.navigationBar.frame.origin.y ?? 0.0
+        self.navigationController?.navigationBar.transform = .init(translationX: 0, y: 0)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.transform = .init(translationX: 0, y: navigationYOffset)
+    }
     
     func configure(with model: MovieDetail) {
-        titleLabel.text = model.title
-        overviewLabel.text = model.titleOverview
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.titleLabel.text = model.title
+            self?.overviewLabel.text = model.titleOverview
+        }
         
         guard let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView.id.videoId)") else {
             return

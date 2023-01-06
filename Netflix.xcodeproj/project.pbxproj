@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		200FE39E29679C9600833361 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 200FE39D29679C9600833361 /* RxDataSources */; };
 		20A53613296264E60057A1C9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A53612296264E60057A1C9 /* HomeViewModel.swift */; };
 		20A5361529626A950057A1C9 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A5361429626A940057A1C9 /* UIViewController+.swift */; };
 		762BB6F028B2FA220072C317 /* YoutubeSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762BB6EF28B2FA220072C317 /* YoutubeSearchResponse.swift */; };
@@ -94,6 +95,7 @@
 				76B7A487287AC6F400C58829 /* Kingfisher in Frameworks */,
 				76B7A484287AC6DD00C58829 /* SDWebImageMapKit in Frameworks */,
 				76BD696928FF874F00555A27 /* RxCocoa in Frameworks */,
+				200FE39E29679C9600833361 /* RxDataSources in Frameworks */,
 				76BD694728FECA5100555A27 /* (null) in Frameworks */,
 				76B7A482287AC6DD00C58829 /* SDWebImage in Frameworks */,
 			);
@@ -279,6 +281,7 @@
 				76B7A486287AC6F400C58829 /* Kingfisher */,
 				76BD696828FF874F00555A27 /* RxCocoa */,
 				76BD696A28FF874F00555A27 /* RxSwift */,
+				200FE39D29679C9600833361 /* RxDataSources */,
 			);
 			productName = Netflix;
 			productReference = 766B78302871B626003AA5E4 /* Netflix.app */;
@@ -334,6 +337,7 @@
 				76B7A480287AC6DD00C58829 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				76B7A485287AC6F400C58829 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				76BD696728FF874F00555A27 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				200FE39C29679C9600833361 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 766B78312871B626003AA5E4 /* Products */;
 			projectDirPath = "";
@@ -654,6 +658,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		200FE39C29679C9600833361 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		76B7A480287AC6DD00C58829 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
@@ -681,6 +693,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		200FE39D29679C9600833361 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 200FE39C29679C9600833361 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
 		76B7A481287AC6DD00C58829 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 76B7A480287AC6DD00C58829 /* XCRemoteSwiftPackageReference "SDWebImage" */;
