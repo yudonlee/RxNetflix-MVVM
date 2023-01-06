@@ -8,7 +8,8 @@
 import UIKit
 
 protocol CollectionViewTableViewCellDelegate: AnyObject {
-    func collectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel)
+    func collectionViewMovieCellTapped(title: Title)
+    func collectionViewMovieCellDownloadTapped(title: Title)
 }
  
 class CollectionViewTableViewCell: UITableViewCell {
@@ -23,7 +24,6 @@ class CollectionViewTableViewCell: UITableViewCell {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 140, height: 200)
         layout.scrollDirection = .horizontal
-//        왜 zero를 해주는걸까?
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
@@ -65,15 +65,7 @@ class CollectionViewTableViewCell: UITableViewCell {
     }
     
     private func downloadTitleAt(indexPath: IndexPath) {
-        
-        DataPersistenceManager.shared.downloadTitleWith(model: titles[indexPath.row]) { result in
-            switch result {
-            case .success():
-                NotificationCenter.default.post(name: NSNotification.Name("downloaded"), object: nil)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+        delegate?.collectionViewMovieCellDownloadTapped(title: titles[indexPath.row])
     }
 }
 
@@ -99,29 +91,8 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         collectionView.deselectItem(at: indexPath, animated: true)
         
         let title = titles[indexPath.row]
-        guard let titleName = title.original_title ?? title.original_name else {
-            return
-        }
         
-        APICaller.shared.getMovie(with: titleName + " trailer") { [weak self] result in
-            switch result {
-            case .success(let videoElement):
-                
-                let title = self?.titles[indexPath.row]
-                guard let titleOverview = title?.overview else {
-                    return
-                }
-                
-                guard let strongSelf = self else {
-                    return
-                }
-                let viewModel = TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: titleOverview)
-                self?.delegate?.collectionViewTableViewCellDidTapCell(strongSelf, viewModel: viewModel)
-                print(videoElement.id)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+        delegate?.collectionViewMovieCellTapped(title: title)
     }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 
 enum Sections: Int {
     case TrendingMovies = 0
@@ -16,6 +17,7 @@ enum Sections: Int {
     case Upcoming = 3
     case Toprated = 4
 }
+
 class HomeViewController: UIViewController {
 
     let sectionTitles: [String] = ["Trending Movies",  "Tending Tv", "Pouplar", "Upcoming Movie", "Top rated"]
@@ -24,6 +26,10 @@ class HomeViewController: UIViewController {
     private var headerView: HeroHeaderUIView?
     
     private var disposeBag = DisposeBag()
+    
+    
+    private let viewModel = HomeViewModel()
+    
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -39,38 +45,35 @@ class HomeViewController: UIViewController {
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
         
-        configureNavBar()
+        configureNavigationBar()
+        configureTableHeaderView()
+        bind()
         
-        // Do any additional setup after loading the view.
-        
-//        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height))
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.eventUI.accept(.viewWillAppear)
+    }
+    private func bind() {
+        viewModel.output
+            .subscribe(onNext: { [weak self] event in
+                switch event {
+                case .displayMovieDetail(let movieDetail):
+                    let vc = TitlePreviewViewController()
+                    vc.configure(with: movieDetail)
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                case .thumbnail(let previewMovie):
+                    self?.headerView?.configure(with: previewMovie)
+                }
+            }).disposed(by: disposeBag)
+    }
+    
+    private func configureTableHeaderView() {
         headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
-        configureHeroHeaderView()
-        
-//        homeFeedTable.translatesAutoresizingMaskIntoConstraints = false
-//        homeFeedTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100)
-//        fetchData()
-        
-//        APICaller.shared.getMovie(with: "harry potter") { result in
-////
-//        }
     }
     
-    private func configureHeroHeaderView() {
-        APICaller.shared.getTrendingMovies { [weak self] result in
-            switch result {
-            case .success(let titles):
-                let selectedTitle = titles.randomElement()
-                self?.randomTrendingMovie = selectedTitle
-                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func configureNavBar() {
+    private func configureNavigationBar() {
 //        why not let? 60초후에 공개됩니다 우리가 더 수정해야할 부분이 존재하기 때문이다
 //      image 내부 수정할 부분이 존재하는데, intrinsicCotentSize의 문제, 분명하게 설정하지 않으면 버튼의 넓이만큼 image가 expanding된다. 그렇기 때문에 intrinctContentSize의 property는 default로 height에 대해서는 설정되는데, width는 되지 않음. 
         var image = UIImage(named: "netflixLogo")
@@ -182,13 +185,24 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {
-    func collectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
-        
-        DispatchQueue.main.async { [weak self] in
-            let vc = TitlePreviewViewController()
-            vc.configure(with: viewModel)
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }
-        
+    func collectionViewMovieCellTapped(title: Title) {
+        viewModel.eventUI.accept(.movieCellTapped(title: title))
+    }
+    
+    func collectionViewMovieCellDownloadTapped(title: Title) {
+        viewModel.eventUI.accept(.movieCellDownloadTapped(title: title))
+    }
+    
+}
+
+
+#if DEBUG
+import SwiftUI
+struct HomeViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        UINavigationController(rootViewController: HomeViewController())
+            .toPreview()
     }
 }
+#endif
+

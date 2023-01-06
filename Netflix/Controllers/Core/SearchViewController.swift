@@ -75,7 +75,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         let title = titles[indexPath.row]
-        let model = TitleViewModel(titleName: title.original_name ?? title.original_title ?? "Unknown", posterURL: title.poster_path ?? "")
+        let model = PreviewMovie(titleName: title.original_name ?? title.original_title ?? "Unknown", posterURL: title.poster_path ?? "")
         cell.configure(with: model)
         return cell
     }
@@ -98,7 +98,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             case .success(let videoElement):
                 DispatchQueue.main.async {
                     let vc = TitlePreviewViewController()
-                    vc.configure(with: TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: title.overview ?? ""))
+                    vc.configure(with: MovieDetail(title: titleName, youtubeView: videoElement, titleOverview: title.overview ?? ""))
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             case .failure(let error):
@@ -113,7 +113,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension SearchViewController: UISearchResultsUpdating, SearchResultViewControllerDelegate {
     
-    func searchResultViewControllerDidTapItem(_ viewModel: TitlePreviewViewModel) {
+    func searchResultViewControllerDidTapItem(_ viewModel: MovieDetail) {
         
         DispatchQueue.main.async { [weak self] in
             let vc = TitlePreviewViewController()

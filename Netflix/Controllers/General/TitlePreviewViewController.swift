@@ -15,8 +15,8 @@ class TitlePreviewViewController: UIViewController {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Harry potter"
         label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.numberOfLines = 0
         label.textColor = .white
         return label
     }()
@@ -26,22 +26,22 @@ class TitlePreviewViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "This is the best movie ever to watch as a kid"
         label.textColor = .white
-//      multiple line not 1 or 2 line
         label.numberOfLines = 0
         return label
     }()
     
     lazy private var downloadButton: UIButton = {
         
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = .red
+        configuration.title = "Download"
+        configuration.baseForegroundColor = .white
+        configuration.buttonSize = .medium
+        
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
-        button.setTitle("Download", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 15
-        button.layer.masksToBounds = true
+        button.configuration = configuration
         return button
     }()
     
@@ -62,7 +62,6 @@ class TitlePreviewViewController: UIViewController {
         view.addSubview(overviewLabel)
         view.addSubview(downloadButton)
         
-        
         configureConstraints()
         
     }
@@ -79,18 +78,18 @@ class TitlePreviewViewController: UIViewController {
         let titleLabelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
         ]
         
         let overviewLabelConstraints = [
             overviewLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
             overviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            overviewLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
         ]
         
         let downloadButtonConstraints = [
             downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            downloadButton.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 25),
-            downloadButton.widthAnchor.constraint(equalToConstant: 120),
-            downloadButton.heightAnchor.constraint(equalToConstant: 40)
+            downloadButton.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 25)
             
         ]
         
@@ -101,7 +100,7 @@ class TitlePreviewViewController: UIViewController {
         
     }
     
-    func configure(with model: TitlePreviewViewModel) {
+    func configure(with model: MovieDetail) {
         titleLabel.text = model.title
         overviewLabel.text = model.titleOverview
         
@@ -111,15 +110,5 @@ class TitlePreviewViewController: UIViewController {
         
         webView.load(URLRequest(url: url))
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
